@@ -1,0 +1,166 @@
+.container {
+    padding: 0;
+    max-width: 100%;
+    margin: 0;
+    background-color: #E8E8E8;
+}
+
+.header {
+    padding: 1rem 10rem;
+    display: flex;
+    justify-content: space-between;
+    height: 7rem;
+    padding-top: 1rem;
+    background-color: white;
+}
+
+.id-go-logo {
+    display: flex;
+    margin-top: 0.7rem;
+    gap: 1rem;
+    padding-left: 2rem;
+    height: 4rem;
+}
+
+.id-go-border {
+    border-left: 1px solid #D8D8D8;
+    height: 4rem;
+}
+
+.bottom {
+    background-color: #E8E8E8;
+    height: 100vh;
+}
+
+.bi-plus-lg {
+    margin-left: 0.5rem;
+}
+
+.reservation-info {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 6.5rem;
+    transition: height 0.3s ease-in-out;
+}
+
+h4 {
+    font-weight: 400;
+}
+
+.btn-outline-primary {
+    float: right;
+    margin: 0 !important;
+    border: 1px solid #5796CA;
+    border-radius: 0.8rem;
+    color: #5796CA;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+}
+
+.btn:hover {
+    border: 1px solid #5796CA;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    background-color: #5796CA;
+    font-weight: 500;
+}
+
+.add-button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    /* padding: 0 4.7rem; */
+    margin-bottom: 1rem;
+}
+
+.reservation-data {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-radius: 1rem;
+    padding: 0.8rem 4.7rem;
+    background-color: #E8F4FE;
+    margin-bottom: 20px;
+}
+
+.info {
+    flex: 1 1 30%; 
+    min-width: 150px;
+    text-align: center;
+    margin: 10px 0;
+    font-weight: 500;
+}
+
+.guest-details {
+    width: 100%;
+    padding: 10px;
+}
+
+.check-in-out-container{
+    display: flex;
+    gap: 1rem;
+}
+.check-in-out-container i{
+margin-left: 1rem;
+
+
+}
+
+.guest {
+    margin: 10px 0;
+}
+
+.accordion {
+    width: 100%;
+    padding: 10px;
+    background-color: #2A4262;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    outline: none;
+    font-size: 16px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.accordion:hover {
+    background-color: #2A4262;
+}
+
+.accordion-icon {
+    margin-left: auto;
+    font-size: 1.2em; 
+}
+.info input.form-control {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.info div {
+    cursor: pointer;
+}
+
+.Notification-info {
+    background-color: #E8F4FE;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem 6.5rem;
+    transition: height 0.3s ease-in-out;
+}
+
+

@@ -1,0 +1,2 @@
+REACT_APP_DOTS_URL=http://qcapi.saavy-pay.com:8082
+REACT_APP_SCANNING_URL=http://qcscannerapi.saavy-pay.com:8082
