@@ -31,11 +31,13 @@ const fetchWithRetry = async (fetchFunction, params, retries = 1) => {
 
 const fetchReservationData = async (reservationId) => {
    const config = getConfig();
-    const response = await fetch(settings.DotsURL+'/api/ows/FetchReservation', {
+   console.log('Settings:', config); // Debugging
+    const response = await fetch(config.DotsURL+'/api/ows/FetchReservation', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
+        mode: "cors",
         body: JSON.stringify({
             hotelDomain: config.hotelDomain,
             kioskID: config.kioskId,

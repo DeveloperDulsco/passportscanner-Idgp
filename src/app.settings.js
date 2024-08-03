@@ -16,5 +16,5 @@ const settings = {
 
 
 
-console.log('Settings:', settings); // Debugging
+
 export default settings;

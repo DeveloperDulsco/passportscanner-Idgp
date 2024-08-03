@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 
+
 const OutsideHome = () => {
   const [show, setShow] = React.useState(false);
   const location = useLocation();
