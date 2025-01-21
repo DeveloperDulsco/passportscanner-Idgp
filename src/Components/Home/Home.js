@@ -168,7 +168,7 @@ function Home() {
     const [isEditingAdults, setIsEditingAdults] = useState(false);
     const [editableRoomNumber, setEditableRoomNumber] = useState('0');
     const [editableAdults, setEditableAdults] = useState('');
-
+    const [loading, setLoading] = useState(true); // Loading state
     const roomNumberRef = useRef(null);
     const adultsRef = useRef(null);
     const [config, setConfig] = useState(null);
@@ -203,6 +203,7 @@ function Home() {
 
     useEffect(() => {
         if (reservationId) {
+            setLoading(true); // Start loading
             fetchWithRetry(fetchReservationData, reservationId, 1).then(data => {
                 if (data && data.responseData && data.responseData.length > 0) {
                     const reservation = data.responseData[0];
@@ -217,14 +218,28 @@ function Home() {
                 }
             }).catch(error => {
                 console.error("Failed to fetch reservation data:", error);
+            }).finally(()=>{
+                setLoading(false); // End loading
             });
         }
     }, [reservationId]);
 
+    const guestListRef  = useRef(null);
+
     const addGuest = () => {
-        setGuests([...guests, `Accompany ${guests.length+1}`]);
+        const guestCount = guests.length; // Current number of guests
+        const accompanyIndex = guestCount > 1 ? guestCount : 1; // Start accompany index from 1 if there's only 1 guest
+
+        setGuests([...guests, `Accompany ${guestCount}`]);
         setEditableAdults(guests.length+1);
         setIsButtonClicked(true);
+
+        // Scroll the "Add Guest" button into view after adding a new guest
+        setTimeout(() => {
+            if (guestListRef.current) {
+                guestListRef.current.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 100);
     };
 
     const toggleGuestDetails = (index) => {
@@ -305,6 +320,16 @@ function Home() {
             document.removeEventListener('mousedown', handleOutsideClick);
         };
     },[handleOutsideClick]);
+
+    if (loading) {
+        return (
+            <div className="loading-overlay">
+                <div className="spinner-container">
+                    <div className="spinner"></div>
+                </div>
+            </div>
+        );
+    }
 
     if (reservationData === null) {
         return <NotFound />;
@@ -398,14 +423,13 @@ function Home() {
                             <h4>Guest Details</h4>
                             <button type="button"
                                 className={`btn btn-outline-primary ${isButtonClicked ? 'clicked' : ''}`}
-                              onClick={addGuest}>
+                              onClick={addGuest}> 
                                 Add Guest 
-                                
                                 <i className="bi bi-plus-lg"></i>
                             </button>
                         </div>
                             {guests.map((guest, index) => (
-                                <div className="guest" key={index}>
+                                <div className="guest" key={index} ref={guestListRef}>
                                     <button className="accordion" onClick={() => toggleGuestDetails(index)}>
                                         {guest.toUpperCase()}
                                         <i className={`bi ${visibleGuestIndex === index ? 'bi-chevron-up' : 'bi-chevron-down'} accordion-icon`}></i>

@@ -8,6 +8,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify'; // Ensure correct import
 import 'react-toastify/dist/ReactToastify.css';
 import { getConfig } from '../../config';
+import { colors } from '@mui/material';
 const fetchReservationData = async (reservationId) => {
     try {
         const config = getConfig();
@@ -40,7 +41,7 @@ const fetchReservationData = async (reservationId) => {
         }
 
         const data = await response.json();
-        console.log("Fetched reservation data:", data);
+        // console.log("Fetched reservation data:", data);
         return data;
     } catch (error) {
         console.error("Failed to fetch reservation data:", error);
@@ -127,6 +128,7 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
 
     useEffect(() => {
         const fetchData = async () => {
+            console.log(guestData)
             if (guestData) {
                 setPmsProfileId(guestData.PmsProfileID || '');
                 if (guestData.BirthDate == "0001-01-01") {
@@ -253,7 +255,7 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
         
         if(!givenName)
         {
-            newErrors.givenName = 'GivenName is Required';
+            newErrors.givenName = 'Given Name is Required';
         }
         else 
         if (!nameRegex.test(givenName)) {
@@ -304,7 +306,7 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
 
         if(!familyName)
         {
-            newErrors.familyName = 'FamilyName is Required';
+            newErrors.familyName = 'Family Name is Required';
         }
        else
         if (!nameRegex.test(familyName)) {
@@ -630,139 +632,144 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
         setLoading(true);
         const config = getConfig();
         const scanDuration = 3000;
-                try {
-           await new Promise((resolve) => setTimeout(resolve, scanDuration));
-            const corsProxyUrl = 'https://thingproxy.freeboard.io/fetch/';
-          /*  const response = await fetch(`${settings.scanningURL}/api/IDScan/ScanDocument`, {
-                method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
+        try {
+                await new Promise((resolve) => setTimeout(resolve, scanDuration));
+                const corsProxyUrl = 'https://thingproxy.freeboard.io/fetch/';
+                    /*  const response = await fetch(`${settings.scanningURL}/api/IDScan/ScanDocument`, {
+                    method: 'GET',
+                    headers: {
+                    'Content-Type': 'application/json',
                
-            },
+                    },
            
-            });*/
-            const response = await axios.get(config.scanningURL+'/api/IDScan/ScanDocument', {
+                    });*/
+                const response = await axios.get(config.scanningURL+'/api/IDScan/ScanDocument', {
                     headers: {
                         'Content-Type': 'application/json',
                     },
                     mode: 'cors' // Ensure CORS mode is explicitly set
                 });
-            if (response.status !== 200) {
-                setLoading(false);
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-           
 
-            const data = await response.data;
-            if (data.Result) {
-                const scannedData = data.ScannedDocument;
-                const nationalityCode = nationalityMapping[scannedData.NationalityFullName] || '';
+                if (response.status !== 200) {
+                    setLoading(false);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-                if (scanType === 'front') {
-                    if (!documentImage) {
-                        //setDocumentType(data.documentType);
-                        if (!documentType || scannedData.DocumentType) {
-                          
-                        setDocumentType(scannedData.DocumentType || '');
-                        }
-                        if (!nationality || nationalityCode) {
-                        setNationality(nationalityCode);
-                        }
-                        if (!documentNumber || scannedData.DocumentNumber) {
-                        setDocumentNumber(scannedData.DocumentNumber || '');
-                        }
-                        if (!dateOfBirth || scannedData.DateOfBirth) {
-                        setDateOfBirth(scannedData.DateOfBirth ? scannedData.DateOfBirth.split('T')[0] : '');
-                        }
-                        if (!givenName || scannedData.GivenName) {
-                        setGivenName(scannedData.GivenName || '');
-                        }
-                        if (!middleName || scannedData.MiddleName) {
-                        setMiddleName(scannedData.MiddleName || '');
-                        }
-                        if (!gender || scannedData.Gender) {
-                        setGender(determineGender(scannedData.Gender) || '');
-                        }
-                        if (!familyName || scannedData.LastName) {
-                        setFamilyName(scannedData.LastName || '');
-                        }
-                        if (!issueDate || scannedData.IssueDate) {
-                        setIssueDate(scannedData.IssueDate ? scannedData.IssueDate.split('T')[0] : '');
-                        }
-                        if (!expiryDate || scannedData.ExpiryDate) {
-                        setExpiryDate(scannedData.ExpiryDate ? scannedData.ExpiryDate.split('T')[0] : '');
-                        }
-                        if (!placeOfIssue || scannedData.IssuingPlace) {
-                        setPlaceOfIssue(scannedData.IssuingPlace || '');
-                        }
-                        if (!documentImage || scannedData.DocumentImageBase64) {
-                        setDocumentImage(scannedData.DocumentImageBase64 || null);
-                        }
-                        if (!faceImage || scannedData.FaceImageBase64) {
-                            setFaceImage(scannedData.FaceImageBase64 || null);
+                const data = await response.data;
+                if (data.Result) {
+                    const scannedData = data.ScannedDocument;
+                    const nationalityCode = nationalityMapping[scannedData.NationalityFullName] || '';
+
+                    console.log("scannedData",scannedData)
+
+                    if (scanType === 'front') {
+                        if (!documentImage) {
+                            //setDocumentType(data.documentType);
+                            if (!documentType || scannedData.DocumentType) {
+                                setDocumentType(scannedData.DocumentType || '');
+                                // setDocumentType('IDENTITYCARD');
+                            }
+                            if (!nationality || nationalityCode) {
+                                setNationality(nationalityCode);
+                            }
+                            if (!documentNumber || scannedData.DocumentNumber) {
+                                setDocumentNumber(scannedData.DocumentNumber || '');
+                            }
+                            if (!dateOfBirth || scannedData.DateOfBirth) {
+                                // console.log("Condition met:");
+                                // console.log("dateOfBirth:", dateOfBirth);
+                                // console.log("scannedData.DateOfBirth:", scannedData.DateOfBirth);
+                                setDateOfBirth(scannedData.DateOfBirth ? scannedData.DateOfBirth.split('T')[0] : '');
+                            }
+                            if (!givenName || scannedData.GivenName) {
+                                setGivenName(scannedData.GivenName || '');
+                            }
+                            if (!middleName || scannedData.MiddleName) {
+                                setMiddleName(scannedData.MiddleName || '');
+                            }
+                            if (!gender || scannedData.Gender) {
+                                setGender(determineGender(scannedData.Gender) || '');
+                            }
+                            if (!familyName || scannedData.LastName) {
+                                setFamilyName(scannedData.LastName || '');
+                            }
+                            if (!issueDate || scannedData.IssueDate) {
+                                setIssueDate(scannedData.IssueDate ? scannedData.IssueDate.split('T')[0] : '');
+                            }
+                            if (!expiryDate || scannedData.ExpiryDate) {
+                                setExpiryDate(scannedData.ExpiryDate ? scannedData.ExpiryDate.split('T')[0] : '');
+                            }
+                            if (!placeOfIssue || scannedData.IssuingPlace) {
+                                setPlaceOfIssue(scannedData.IssuingPlace || '');
+                            }
+                            if (!documentImage || scannedData.DocumentImageBase64) {
+                                setDocumentImage(scannedData.DocumentImageBase64 || null);
+                            }
+                            if (!faceImage || scannedData.FaceImageBase64) {
+                                setFaceImage(scannedData.FaceImageBase64 || null);
                             }
                        
-                    }
-                    setBackScanButtonClicked(false);
-                } else if (scanType === 'back') {
-                    if (!documentImage2 ) {
-                        //setDocumentType(scannedData.documentType);
-                        if (!documentType)
-                        {
-                        setDocumentType(scannedData.DocumentType || '');
                         }
-                    if (!nationality) {
-                        setNationality(nationalityCode);
+                        setBackScanButtonClicked(false);
+                    } else if (scanType === 'back') {
+                        if (!documentImage2 ) {
+                            //setDocumentType(scannedData.documentType);
+                            if (!documentType)
+                            {
+                                setDocumentType(scannedData.DocumentType || '');
+                            }
+                            if (!nationality) {
+                                setNationality(nationalityCode);
+                            }
+                            if (!documentNumber) {
+                                setDocumentNumber(scannedData.DocumentNumber || '');
+                            }
+                        if(!dateOfBirth) 
+                        {
+                            setDateOfBirth(scannedData.DateOfBirth ? scannedData.DateOfBirth.split('T')[0] : '');
+                        }
+                        if(!givenName) 
+                        {
+                            setGivenName(scannedData.GivenName || '');
+                        }
+                        if(!middleName) 
+                        {
+                            setMiddleName(scannedData.MiddleName || '');
+                        }
+                        if(!gender) 
+                        {
+                            setGender(determineGender(scannedData.Gender) || '');
+                        }
+                        if(!familyName)
+                        {
+                            setFamilyName(scannedData.LastName || '');
+                        }
+                        if(!issueDate)
+                        {
+                            setIssueDate(scannedData.IssueDate ? scannedData.IssueDate.split('T')[0] : '');
+                        }
+                        if(!expiryDate)
+                        {
+                            setExpiryDate(scannedData.ExpiryDate ? scannedData.ExpiryDate.split('T')[0] : '');
+                        }
+                        if(!placeOfIssue)
+                        {  
+                            setPlaceOfIssue(scannedData.IssuingPlace || '');
+                        }
+                        if(!documentImage2)
+                        {
+                            setDocumentImage2(scannedData.DocumentImageBase64 || null);
+                        }
+                        if(!faceImage)
+                        {
+                            setFaceImage(scannedData.FaceImageBase64 || null);
+                        }
+                        setBackScanButtonClicked(true);
                     }
-                    if (!documentNumber) {
-                        setDocumentNumber(scannedData.DocumentNumber || '');
-                    }
-                    if(!dateOfBirth)
-                    {
-                        setDateOfBirth(scannedData.DateOfBirth ? scannedData.DateOfBirth.split('T')[0] : '');
-                    }
-                    if(!givenName)
-                    {
-                        setGivenName(scannedData.GivenName || '');
-                    }
-                    if(!middleName)
-                    {
-                        setMiddleName(scannedData.MiddleName || '');
-                    }
-                    if(!gender)
-                    {
-                        setGender(determineGender(scannedData.Gender) || '');
-                    }
-                    if(!familyName)
-                    {
-                        setFamilyName(scannedData.LastName || '');
-                    }
-                    if(!issueDate)
-                    {
-                        setIssueDate(scannedData.IssueDate ? scannedData.IssueDate.split('T')[0] : '');
-                    }
-                    if(!expiryDate)
-                    {
-                        setExpiryDate(scannedData.ExpiryDate ? scannedData.ExpiryDate.split('T')[0] : '');
-                    }
-                    if(!placeOfIssue)
-                    {  
-                        setPlaceOfIssue(scannedData.IssuingPlace || '');
-                    }
-                    if(!documentImage2)
-                    {
-                        setDocumentImage2(scannedData.DocumentImageBase64 || null);
-                    }
-                    if(!faceImage)
-                    {
-                        setFaceImage(scannedData.FaceImageBase64 || null);
-                    }
-                    setBackScanButtonClicked(true);
+                } else {
+                    console.error("Scanning failed:", data.ErrorMessage);
                 }
-            } else {
-                console.error("Scanning failed:", data.ErrorMessage);
             }
-        }
         } catch (error) {
             console.error("Failed to scan document:", error);
             setAreButtonsVisible(false);
@@ -810,12 +817,6 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
                 console.error('Error:', error);
             });
     };
-
-
-
-
-   
-
 
 
     const fetchNationalityList = async () => {
@@ -1131,7 +1132,7 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
             }
 
             const data = await response.json();
-            console.log("Fetched check-in/check-out info:", data);
+            // console.log("Fetched check-in/check-out info:", data);
 
             if (data && data.responseData && data.responseData.length > 0) {
                 const checkInCheckOutInfo = data.responseData[0];
@@ -1196,6 +1197,13 @@ export function GuestDetails({ adults,editroomNumber,IsAddGuestvisible,isVisible
                 {
                     setisVisibleSave(false);
                 }
+
+                setDateOfBirth(profileData.BirthDate ? profileData.BirthDate.split('T')[0] : '');
+
+                // if (profileData?.BirthDate && profileData.BirthDate !== "0001-01-01T00:00:00") {
+                //     console.log(profileData.BirthDate.split('T')[0])
+                //     setDateOfBirth(profileData.BirthDate.split('T')[0]);
+                // } 
             }
             
         } catch (error) {
@@ -1258,7 +1266,7 @@ return (
         )}
         {!loading && !showSuccessAlert && (
             <>
-            <div className='notification-container'> <div className="notification-icon">&#33;</div><div className="notification-message">Please place the document on scanner and scan on Picture Box</div></div>
+            <div className='notification-container'> <div className="notification-icon">&#33;</div><div className="notification-message">Please place the document on the scanner and press the scan button on the image box.</div></div>
                 <div className="guest-images">
                     <div className={`documentImage ${errors.documentImage ? 'has-error' : ''}`}>
                     <div className="user-pic">
@@ -1319,14 +1327,14 @@ return (
                 </div>
                 <div className="guest-form">
                     <div className={`document-type ${errors.documentType ? 'has-error' : ''}`}>
-                        <label>Document Type</label>
+                        <label>Document Type <span class="mandatory-field">*</span></label>
                         <select value={documentType} onChange={(e) => setDocumentType(e.target.value)}>
                             <option value="">Select Document Type</option>
                             <option value="PASSPORT">Passport</option>
                             <option value="IDENTITYCARD">Id Card</option>
                             <option value="RESIDENTPERMIT">Resident Permit</option>
                             <option value="DRIVINGLICENSE">Driving License</option>
-                            <option value="UNKNOWN">Uknown</option>
+                            <option value="UNKNOWN">Unknown</option>
                             <option value="VISA">Visa</option>
                         </select>
                         {errors.documentType && <div className="error">{errors.documentType}</div>}
@@ -1335,7 +1343,7 @@ return (
 
                     
                     <div className={`document-number ${errors.documentNumber ? 'has-error' : ''}`}>
-                        <label>Document Number</label>
+                        <label>Document Number <span class="mandatory-field">*</span> </label>
                         <input type="text" value={documentNumber} onChange={(e) => setDocumentNumber(e.target.value)} />
                         {errors.documentNumber && <div className="error">{errors.documentNumber}</div>}
                     </div>
@@ -1357,7 +1365,7 @@ return (
                         {errors.dateOfBirth && <div className="error">{errors.dateOfBirth}</div>}
                     </div>
                     <div className={`given-name ${errors.givenName ? 'has-error' : ''}`}>
-                        <label>Given Name</label>
+                        <label>Given Name <span class="mandatory-field">*</span></label>
                         <input type="text" value={givenName} onChange={(e) => setGivenName(e.target.value)} />
                         {errors.givenName && <div className="error">{errors.givenName}</div>}
                     </div>
@@ -1369,7 +1377,7 @@ return (
                         </div>
                     )}
                     <div className={`family-name ${errors.familyName ? 'has-error' : ''}`}>
-                        <label>Family Name</label>
+                        <label>Family Name <span class="mandatory-field">*</span></label>
                         <input type="text" value={familyName} onChange={(e) => setFamilyName(e.target.value)} />
                         {errors.familyName && <div className="error">{errors.familyName}</div>}
                     </div>
@@ -1402,11 +1410,14 @@ return (
                     </div>
                 </div>
                 <div className="form-buttons">
-                    {isVisibleSave &&
+                    {/* {isVisibleSave &&
+                        <button onClick={handleSave}>
+                            <i className="bi bi-floppy"></i>Save
+                        </button>
+                    } */}
                     <button onClick={handleSave}>
                         <i className="bi bi-floppy"></i>Save
                     </button>
-}
                     <button onClick={handleCancel}>
                         <i className="bi bi-x-square"></i>Cancel
                     </button>

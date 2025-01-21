@@ -71,6 +71,8 @@
 }
 
 .profile-pic {
+    width: 350px;
+    height: 190px;
     padding: 0 4rem;
     background: grey;
     border-radius: 1rem;
@@ -273,4 +275,8 @@
     font-size: 1.25rem;
     color: #333;
     font-weight:bold ;
+}
+
+.mandatory-field {
+    color: red;
 }

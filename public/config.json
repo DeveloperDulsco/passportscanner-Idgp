@@ -8,7 +8,7 @@
     "destinationSystemType": "PMS",
     "username": "SUPERVISOR",
     "password": "PEGASUS2021",
-    "DotsURL": "http://qcapi.saavy-pay.com:8082",
-    "scanningURL": "http://localhost:8089",
+    "DotsURL": "http://localhost:8086/",
+    "scanningURL": "http://qcscannerapi.saavy-pay.com:8082/",
     "legNumber":"1"
 }
